@@ -68,4 +68,42 @@ public class AbstractDAO<T> {
 
         return instance;
     }
+
+    public void insert(T obj){
+        StringBuilder query = new StringBuilder("INSERT INTO ");
+        query.append(type.getSimpleName().toLowerCase()).append(" (");
+
+        Field[] fields = type.getDeclaredFields();
+
+        for(Field field : fields){
+            if(!field.getName().equals("id")){
+                query.append(field.getName()).append(",");
+            }
+        }
+
+        query.deleteCharAt(query.length() - 1);
+        query.append(") VALUES (" );
+
+        for(Field field : fields){
+            if(!field.getName().equals("id")){
+                query.append("?,");
+            }
+        }
+        query.deleteCharAt(query.length()-1);
+        query.append(")");
+
+        try(Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query.toString())){
+            int index = 1;
+            for(Field field : fields){
+                if(!field.getName().equals("id")){
+                    field.setAccessible(true);
+                    statement.setObject(index++, field.get(obj));
+                }
+            }
+            statement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
