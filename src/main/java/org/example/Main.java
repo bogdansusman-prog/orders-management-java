@@ -1,17 +1,19 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import org.example.connection.ConnectionFactory;
+import org.example.dataAccessLayer.ClientDAO;
+import org.example.model.Client;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
-        }
+public class Main {
+    public static void main(String[] args) {
+
+        System.out.println("Orders Management app started!");
+        ClientDAO dao = new Client(1, "Bogdan Updated", "updated@mail.com", "Cluj");
+
+        System.out.println(dao.findAll());
+
+        dao.delete(2);
+        System.out.println(dao.findAll());
     }
 }
+//
