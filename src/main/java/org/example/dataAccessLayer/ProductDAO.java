@@ -1,4 +1,6 @@
 package org.example.dataAccessLayer;
 
-public class ProductDAO {
+import org.example.model.Product;
+
+public class ProductDAO extends AbstractDAO<Product>{
 }
