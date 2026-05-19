@@ -9,10 +9,10 @@ public class Order {
     public Order(){}
 
     public Order(int quantity, int productId, int clientId, int id) {
-        this.quantity = quantity;
-        this.productId = productId;
-        this.clientId = clientId;
         this.id = id;
+        this.clientId = clientId;
+        this.productId = productId;
+        this.quantity = quantity;
     }
 
     public int getId() {

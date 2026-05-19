@@ -44,12 +44,12 @@ public class AbstractDAO<T> {
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
 
-            if (rs.next()) {
-                return createObject(rs);
+            try(ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return createObject(rs);
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,4 +106,56 @@ public class AbstractDAO<T> {
             e.printStackTrace();
         }
     }
+
+    public void update(T obj){
+        Field[] fields = type.getDeclaredFields();
+
+        StringBuilder query = new StringBuilder("UPDATE ");
+        query.append(type.getSimpleName().toLowerCase()).append(" SET ");
+
+        for(Field field : fields){
+            if(!field.getName().equals("id")){
+                query.append(field.getName()).append(" = ?, ");
+            }
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE id = ?");
+
+        try(Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query.toString())
+        ){
+            int index = 1;
+            int idValue = 0;
+
+            for(Field field: fields){
+                field.setAccessible(true);
+
+                if(field.getName().equals("id")){
+                    idValue = (int) field.get(obj);
+                }else{
+                    statement.setObject(index++, field.get(obj));
+                }
+            }
+            statement.setInt(index, idValue);
+            statement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id){
+        String query = "DELETE FROM " + type.getSimpleName().toLowerCase() +
+                " WHERE id = ?";
+
+        try(Connection connection = ConnectionFactory.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)
+        ){
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

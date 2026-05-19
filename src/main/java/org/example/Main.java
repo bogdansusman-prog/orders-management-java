@@ -7,13 +7,13 @@ import org.example.model.Client;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println(ConnectionFactory.getConnection());
+        System.out.println("Orders Management app started!");
+        ClientDAO dao = new Client(1, "Bogdan Updated", "updated@mail.com", "Cluj");
 
-        ClientDAO dao = new ClientDAO();
+        System.out.println(dao.findAll());
 
-        Client c = new Client(0, "Bogdan", "bogdan@mail.com", "Cluj");
-        dao.insert(c);
-
+        dao.delete(2);
         System.out.println(dao.findAll());
     }
 }
+//
