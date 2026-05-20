@@ -77,7 +77,9 @@ public class AbstractDAO<T> {
 
         for(Field field : fields){
             if(!field.getName().equals("id")){
-                query.append(field.getName()).append(",");
+                query.append("\"")
+                        .append(field.getName())
+                        .append("\",");
             }
         }
 
@@ -115,7 +117,7 @@ public class AbstractDAO<T> {
 
         for(Field field : fields){
             if(!field.getName().equals("id")){
-                query.append(field.getName()).append(" = ?, ");
+                query.append("\"").append(field.getName()).append("\" = ?, ");
             }
         }
 

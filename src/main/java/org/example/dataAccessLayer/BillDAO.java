@@ -10,10 +10,10 @@ import java.util.List;
 public class BillDAO {
     public void insert(Bill bill){
         String query = """
-                INSERT INTO bill
-                (orderId, clientName, productName, quantity, totalPrice)
-                VALUES(?, ?, ?, ?, ?)
-                """;
+        INSERT INTO bill
+        ("orderId", "clientName", "productName", quantity, "totalPrice")
+        VALUES (?, ?, ?, ?, ?)
+        """;
 
         try(Connection connection = ConnectionFactory.getConnection();
         PreparedStatement statement = connection.prepareStatement(query)){
@@ -41,12 +41,12 @@ public class BillDAO {
 
             while(rs.next()){
                 Bill bill = new Bill(
-                     rs.getInt("id"),
-                     rs.getInt("orderId"),
-                     rs.getString("clientName"),
-                     rs.getString("productName"),
-                     rs.getInt("quantity"),
-                rs.getDouble("totalPrice")
+                        rs.getInt("id"),
+                        rs.getInt("orderId"),
+                        rs.getString("clientName"),
+                        rs.getString("productName"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("totalPrice")
                 );
                 bills.add(bill);
             }

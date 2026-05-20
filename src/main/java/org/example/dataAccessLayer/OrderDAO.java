@@ -1,6 +1,6 @@
 package org.example.dataAccessLayer;
 
-import org.example.model.Order;
+import org.example.model.Orders;
 
-public class OrderDAO extends AbstractDAO<Order>{
+public class OrderDAO extends AbstractDAO<Orders> {
 }
