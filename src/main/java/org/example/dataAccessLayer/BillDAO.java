@@ -7,7 +7,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clasa responsabila pentru operatiile de acces la baza de date
+ * asociate facturilor generate dupa plasarea comenzilor.
+ */
+
 public class BillDAO {
+    /**
+     * Insereaza o factura in baza de date.
+     *
+     * @param bill factura care va fi inserata
+     */
     public void insert(Bill bill){
         String query = """
         INSERT INTO bill
@@ -30,6 +40,11 @@ public class BillDAO {
         }
     }
 
+    /**
+     * Returneaza toate facturile existente in baza de date.
+     *
+     * @return lista de facturi
+     */
     public List<Bill> findAll(){
         List<Bill> bills = new ArrayList<>();
 
