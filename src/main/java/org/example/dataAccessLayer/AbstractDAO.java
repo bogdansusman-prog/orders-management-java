@@ -8,16 +8,30 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clasa generica pentru operatiile de acces la baza de date.
+ * Foloseste reflection pentru generarea automata a operatiilor CRUD.
+ *
+ * @param <T> tipul obiectului utilizat
+ */
+
 public class AbstractDAO<T> {
     private final Class<T> type;
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Initializeaza tipul generic utilizat de clasa DAO.
+     */
     public AbstractDAO() {
         this.type = (Class<T>) ((ParameterizedType)
                 getClass().getGenericSuperclass())
                 .getActualTypeArguments()[0];
     }
 
+    /**
+     * Returneaza toate inregistrarile din tabela asociata tipului generic.
+     *
+     * @return lista de obiecte din baza de date
+     */
     public List<T> findAll() {
         List<T> list = new ArrayList<>();
         String query = "SELECT * FROM " + type.getSimpleName().toLowerCase();
@@ -37,6 +51,12 @@ public class AbstractDAO<T> {
         return list;
     }
 
+    /**
+     * Cauta un obiect dupa id.
+     *
+     * @param id id-ul obiectului cautat
+     * @return obiectul gasit sau null daca nu exista
+     */
     public T findById(int id) {
         String query = "SELECT * FROM " + type.getSimpleName().toLowerCase() + " WHERE id = ?";
 
@@ -57,6 +77,13 @@ public class AbstractDAO<T> {
         return null;
     }
 
+    /**
+     * Creeaza un obiect pe baza datelor din ResultSet folosind reflection.
+     *
+     * @param rs rezultatul interogarii SQL
+     * @return obiectul creat
+     * @throws Exception daca apare o eroare la crearea obiectului
+     */
     private T createObject(ResultSet rs) throws Exception {
         T instance = type.getDeclaredConstructor().newInstance();
 
@@ -69,6 +96,11 @@ public class AbstractDAO<T> {
         return instance;
     }
 
+    /**
+     * Insereaza un obiect in baza de date.
+     *
+     * @param obj obiectul care va fi inserat
+     */
     public void insert(T obj){
         StringBuilder query = new StringBuilder("INSERT INTO ");
         query.append(type.getSimpleName().toLowerCase()).append(" (");
@@ -109,6 +141,11 @@ public class AbstractDAO<T> {
         }
     }
 
+    /**
+     * Actualizeaza un obiect existent in baza de date.
+     *
+     * @param obj obiectul care va fi actualizat
+     */
     public void update(T obj){
         Field[] fields = type.getDeclaredFields();
 
@@ -146,6 +183,11 @@ public class AbstractDAO<T> {
         }
     }
 
+    /**
+     * Sterge un obiect din baza de date dupa id.
+     *
+     * @param id id-ul obiectului care va fi sters
+     */
     public void delete(int id){
         String query = "DELETE FROM " + type.getSimpleName().toLowerCase() +
                 " WHERE id = ?";
