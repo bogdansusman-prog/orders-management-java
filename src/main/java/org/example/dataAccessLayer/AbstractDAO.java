@@ -118,11 +118,16 @@ public class AbstractDAO<T> {
         query.deleteCharAt(query.length() - 1);
         query.append(") VALUES (" );
 
-        for(Field field : fields){
-            if(!field.getName().equals("id")){
-                query.append("?,");
-            }
-        }
+//        for(Field field : fields){
+//            if(!field.getName().equals("id")){
+//                query.append("?,");
+//            }
+//        }
+        List.of(fields)
+                .stream()
+                .filter(field -> !field.getName().equals("id"))
+                .forEach(field -> query.append("?,"));
+
         query.deleteCharAt(query.length()-1);
         query.append(")");
 

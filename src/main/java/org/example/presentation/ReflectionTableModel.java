@@ -26,24 +26,26 @@ public class ReflectionTableModel {
         Class<?> clazz = objects.get(0).getClass();
         Field[] fields = clazz.getDeclaredFields();
 
-        for(Field field : fields){
-            model.addColumn(field.getName());
-        }
+        List.of(fields)
+                .stream()
+                .map(Field::getName)
+                .forEach(model::addColumn);
 
-        for(T object : objects){
+        objects.forEach(object -> {
             Object[] row = new Object[fields.length];
 
-
-            for(int i=0; i<fields.length; i++) {
+            //for(int i=0; i<fields.length; i++) {
+            java.util.stream.IntStream.range(0, fields.length)
+                    .forEach(i -> {
                 try {
                     fields[i].setAccessible(true);
                     row[i] = fields[i].get(object);
                 }catch(IllegalAccessException e){
                     row[i] = null;
                 }
-            }
+            });
             model.addRow(row);
-        }
+        });
         return model;
     }
 }
