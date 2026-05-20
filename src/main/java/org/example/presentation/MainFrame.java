@@ -3,11 +3,10 @@ package org.example.presentation;
 import org.example.businessLayer.ClientBLL;
 import org.example.businessLayer.ProductBLL;
 import org.example.businessLayer.OrderBLL;
+import org.example.businessLayer.BillBLL;
 import org.example.model.Client;
 import org.example.model.Product;
 
-import javax.swing.table.DefaultTableModel;
-import java.util.List;
 import javax.swing.*;
 
 public class MainFrame extends JFrame{
@@ -34,10 +33,13 @@ public class MainFrame extends JFrame{
     private JButton placeOrderButton;
     private JTable orderTable;
     private JTextField orderQuantityField;
+    private JTable billTable;
+    private JButton viewBillsButton;
 
     private final ClientBLL clientBLL = new ClientBLL();
     private final ProductBLL productBLL = new ProductBLL();
     private final OrderBLL orderBLL = new OrderBLL();
+    private final BillBLL billBLL = new BillBLL();
 
     public MainFrame(){
         setTitle("Orders Management");
@@ -53,12 +55,14 @@ public class MainFrame extends JFrame{
         loadCombos();
         clearProductFields();
         initTableSelections();
+        loadBills();
     }
 
     private void initListeners() {
         viewClientsButton.addActionListener(e -> loadClients());
         viewProductButton.addActionListener(e -> loadProducts());
         placeOrderButton.addActionListener(e -> placeOrder());
+        viewBillsButton.addActionListener(e -> loadBills());
 
         addClientButton.addActionListener(e -> {
             try {
@@ -315,5 +319,12 @@ public class MainFrame extends JFrame{
                 );
             }
         });
+    }
+    private void loadBills() {
+        billTable.setModel(
+                ReflectionTableModel.createTableModel(
+                        billBLL.findAll()
+                )
+        );
     }
 }
