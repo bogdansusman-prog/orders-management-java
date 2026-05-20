@@ -83,10 +83,10 @@ public class MainFrame extends JFrame{
         addProductButton.addActionListener(e -> {
             try {
                 Product product = new Product(
-                        Integer.parseInt(productStockField.getText()),
+                        0,
                         productNameField.getText(),
                         Double.parseDouble(productPriceField.getText()),
-                        0
+                        Integer.parseInt(productStockField.getText())
                 );
 
                 productBLL.insert(product);
@@ -180,10 +180,10 @@ public class MainFrame extends JFrame{
                 int id = (int) productTable.getValueAt(selectedRow, 0);
 
                 Product product = new Product(
-                        Integer.parseInt(productStockField.getText()),
+                        id,
                         productNameField.getText(),
                         Double.parseDouble(productPriceField.getText()),
-                        id
+                        Integer.parseInt(productStockField.getText())
                 );
 
                 productBLL.update(product);
