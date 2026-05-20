@@ -9,6 +9,10 @@ import org.example.model.Product;
 
 import java.util.List;
 
+/**
+ * Clasa responsabila pentru logica de business asociata comenzilor.
+ * Gestioneaza plasarea comenzilor, verificarea stocului si generarea facturilor.
+ */
 public class OrderBLL {
 
     private final OrderDAO orderDAO = new OrderDAO();
@@ -17,10 +21,25 @@ public class OrderBLL {
     private final ClientBLL clientBLL = new ClientBLL();
     private final ProductBLL productBLL = new ProductBLL();
 
+    /**
+     * Returneaza toate comenzile existente.
+     *
+     * @return lista de comenzi
+     */
     public List<Orders> findAll() {
         return orderDAO.findAll();
     }
 
+    /**
+     * Plaseaza o comanda noua dupa validarea datelor si verificarea stocului.
+     * De asemenea, actualizeaza stocul produsului si genereaza factura.
+     *
+     * @param clientId id-ul clientului
+     * @param productId id-ul produsului
+     * @param quantity cantitatea comandata
+     * @throws IllegalArgumentException daca stocul este insuficient
+     *    sau cantitatea este invalida
+     */
     public void placeOrder(int clientId, int productId, int quantity) {
 
         if (quantity <= 0) {
@@ -66,11 +85,23 @@ public class OrderBLL {
         billDAO.insert(bill);
     }
 
+    /**
+     * Sterge o comanda dupa id.
+     *
+     * @param id id-ul comenzii
+     */
     public void delete(int id) {
         findById(id);
         orderDAO.delete(id);
     }
 
+    /**
+     * Cauta o comanda dupa id.
+     *
+     * @param id id-ul comenzii
+     * @return comanda gasita
+     * @throws IllegalArgumentException daca comanda nu exista
+     */
     public Orders findById(int id){
         Orders order = orderDAO.findById(id);
 
