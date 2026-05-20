@@ -1,5 +1,10 @@
 package org.example.model;
 
+/**
+ * Reprezinta factura generata pentru o comanda plasata.
+ * Contine informatii despre client, produs, cantitate si pretul total.
+ */
+
 public record Bill (
     int id,
     int orderId,
@@ -8,9 +13,3 @@ public record Bill (
     int quantity,
     double totalPrice
 ){}
-
-//java genereaza automat constructor
-//getters
-//toString
-//equals
-//hashCode
