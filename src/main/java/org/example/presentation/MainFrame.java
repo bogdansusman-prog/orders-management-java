@@ -9,6 +9,12 @@ import org.example.model.Product;
 
 import javax.swing.*;
 
+/**
+ * Interfata grafica principala a aplicatiei.
+ * Permite gestionarea clientilor, produselor,
+ * comenzilor si facturilor.
+ */
+
 public class MainFrame extends JFrame{
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
@@ -41,6 +47,10 @@ public class MainFrame extends JFrame{
     private final OrderBLL orderBLL = new OrderBLL();
     private final BillBLL billBLL = new BillBLL();
 
+    /**
+     * Creeaza si initializeaza interfata grafica principala.
+     */
+
     public MainFrame(){
         setTitle("Orders Management");
         setContentPane(panel1);
@@ -57,6 +67,10 @@ public class MainFrame extends JFrame{
         initTableSelections();
         loadBills();
     }
+
+    /**
+     * Initializeaza listener-ele pentru componentele grafice.
+     */
 
     private void initListeners() {
         viewClientsButton.addActionListener(e -> loadClients());
@@ -203,11 +217,19 @@ public class MainFrame extends JFrame{
         });
     }
 
+    /**
+     * Incarca clientii in tabelul asociat.
+     */
+
     private void loadClients() {
         clientTable.setModel(
                 ReflectionTableModel.createTableModel(clientBLL.findAll())
         );
     }
+
+    /**
+     * Incarca produsele in tabelul asociat.
+     */
 
     private void loadProducts() {
         productTable.setModel(
@@ -215,24 +237,49 @@ public class MainFrame extends JFrame{
         );
     }
 
+    /**
+     * Incarca comenzile in tabelul asociat.
+     */
+
     private void loadOrders() {
         orderTable.setModel(
                 ReflectionTableModel.createTableModel(orderBLL.findAll())
         );
     }
 
+    /**
+     * Incarca facturile in bills asociat.
+     */
+
+    private void loadBills() {
+        billTable.setModel(
+                ReflectionTableModel.createTableModel(
+                        billBLL.findAll()
+                )
+        );
+    }
+
+    /**
+     * Incarca datele in componentele ComboBox.
+     */
     private void loadCombos() {
         clientComboBox.removeAllItems();
         productComboBox.removeAllItems();
 
-        for (Client c : clientBLL.findAll()) {
-            clientComboBox.addItem(c.getId() + " - " + c.getName());
-        }
+        clientBLL.findAll()
+                .stream()
+                .map(c -> c.getId() + " - " + c.getName())
+                .forEach(clientComboBox::addItem);
 
-        for (Product p : productBLL.findAll()) {
-            productComboBox.addItem(p.getId() + " - " + p.getName());
-        }
+        productBLL.findAll()
+                .stream()
+                .map(p -> p.getId() + " - " + p.getName())
+                .forEach(productComboBox::addItem);
     }
+
+    /**
+     * Plaseaza o comanda noua pe baza datelor introduse.
+     */
 
     private void placeOrder() {
         try {
@@ -261,12 +308,21 @@ public class MainFrame extends JFrame{
         }
     }
 
+    /**
+     * Goleste campurile asociate clientilor.
+     */
+
     private void clearClientFields() {
         clientNameField.setText("");
         clientEmailField.setText("");
         clientAddressField.setText("");
     }
 
+    /**
+     * Afiseaza un mesaj de eroare in interfata grafica.
+     *
+     * @param ex exceptia aparuta
+     */
     private void showError(Exception ex) {
         JOptionPane.showMessageDialog(
                 this,
@@ -275,11 +331,19 @@ public class MainFrame extends JFrame{
                 JOptionPane.ERROR_MESSAGE
         );
     }
+    /**
+     * Goleste campurile asociate produselor.
+     */
     private void clearProductFields() {
         productNameField.setText("");
         productPriceField.setText("");
         productStockField.setText("");
     }
+
+    /**
+     * Initializeaza selectia randurilor din tabele
+     * si completeaza automat campurile asociate.
+     */
     private void initTableSelections() {
 
         clientTable.getSelectionModel().addListSelectionListener(e -> {
@@ -319,12 +383,5 @@ public class MainFrame extends JFrame{
                 );
             }
         });
-    }
-    private void loadBills() {
-        billTable.setModel(
-                ReflectionTableModel.createTableModel(
-                        billBLL.findAll()
-                )
-        );
     }
 }
