@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clasa generica pentru operatiile de acces la baza de date.
- * Foloseste reflection pentru generarea automata a operatiilor CRUD.
+ * clasa generica pentru operatiile de acces la baza de date
+ * foloseste reflection pentru generarea automata a operatiilor CRUD.
  *
  * @param <T> tipul obiectului utilizat
  */
