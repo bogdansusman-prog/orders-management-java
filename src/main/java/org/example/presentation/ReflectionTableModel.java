@@ -48,4 +48,6 @@ public class ReflectionTableModel {
         });
         return model;
     }
+    // FOLOSESTI CHEIE STRAINA SI DEAIA NU TE LASA SA STERGI...
+    // CITESTE DACA NU STII CE E, DA TREBUIA SA STII
 }
